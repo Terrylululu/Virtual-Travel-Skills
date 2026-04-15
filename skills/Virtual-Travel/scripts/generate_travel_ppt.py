@@ -3,7 +3,7 @@
 """
 旅行日记 PPT 生成器
 功能：下载景点图片、创建文件夹结构、生成 PowerPoint 旅行日记
-用法：python generate_travel_ppt.py --city 北京 --output-dir .
+用法：python generate_travel_ppt.py --city 北京 --output-dir "c:\\Users\\Terry\\Desktop\\Virtual-Travel-Skills-main"
 """
 
 import os
@@ -202,6 +202,35 @@ ATTRACTION_DATA = {
             "ticket": "约人民币130元",
             "wikimedia_file": "Laoshan, Qingdao, Shandong, China - panoramio (32).jpg",
             "image_filename": "laoshan.jpg"
+        }
+    },
+    "广州": {
+        "广州塔": {
+            "name_en": "Canton Tower",
+            "description": "广州塔是广州市的地标性建筑，总高600米（含天线桅杆），是中国第一高塔、世界第四高塔。塔身楼层为454米，外形独特，以两个椭圆形斜交网格结构呈'扭腰'造型，被昵称为'小蛮腰'。夜晚灯光秀璀璨夺目，映照珠江，是广州最浪漫的夜景地标。",
+            "tips": "建议傍晚前往，可先看日落后欣赏夜景灯光秀；珠江新城一侧观望效果极佳，游船游览珠江时视角更佳。",
+            "best_time": "傍晚至夜间（灯光秀最精彩）",
+            "ticket": "约人民币150-200元（根据观光层不同而定）",
+            "wikimedia_file": "Canton_Tower_2017-10-02.jpg",
+            "image_filename": "canton_tower.jpg"
+        },
+        "陈家祠": {
+            "name_en": "Chen Clan Ancestral Hall",
+            "description": "陈家祠（陈氏书院）建于1894年清代，是广东省规模最大、保存最完整的传统岭南建筑群，也是广州民间工艺博物馆。建筑内外密布木雕、砖雕、石雕、灰塑、陶塑及铁铸工艺，七十二间厅堂庄严气派，是岭南建筑艺术的集大成者，被誉为'岭南建筑艺术明珠'。",
+            "tips": "馆内集中展示广绣、广彩、广雕等非遗工艺；周末常有粤剧演出，建议提前查询演出时间。",
+            "best_time": "全年皆宜；工作日上午人流较少",
+            "ticket": "约人民币10元",
+            "wikimedia_file": "Chen_Clan_Ancestral_Hall_2025.06_03.jpg",
+            "image_filename": "chen_clan_hall.jpg"
+        },
+        "中山纪念堂": {
+            "name_en": "Sun Yat-sen Memorial Hall",
+            "description": "广州中山纪念堂是为纪念中国民主革命先驱孙中山先生而建，落成于1931年，是中国著名的宏伟建筑之一。整座建筑呈八角形，采用中国传统宫殿式风格，高47米，跨度71米，全场无一根支柱。主厅可容纳5000余人，宏伟壮观，周边园林绿树葱茏，与越秀山连为一体。",
+            "tips": "纪念堂周边的越秀公园可步行前往，五羊雕塑就在附近；建议上午进园，城墙遗址和木兰石须一看。",
+            "best_time": "秋冬（10月至次年2月天气舒适）",
+            "ticket": "免费开放（节假日可能有活动需购票）",
+            "wikimedia_file": "Sun_Yat-sen_Memorial_Hall_Guangzhou.jpg",
+            "image_filename": "sun_yatsen_hall.jpg"
         }
     }
 }
@@ -505,7 +534,7 @@ def generate_ppt(city: str, base_dir: Path) -> Path:
                 font_size=22, color=COLOR_WHITE,
                 align=PP_ALIGN.CENTER)
     add_rect(slide, Inches(4), Inches(4.3), Inches(5), Inches(0.04), COLOR_ACCENT)
-    add_textbox(slide, "由「我爱旅行」技能自动生成",
+    add_textbox(slide, "由「虚拟旅行」技能自动生成",
                 Inches(0.5), Inches(4.6), Inches(12.3), Inches(0.5),
                 font_size=14, color=COLOR_LIGHT,
                 align=PP_ALIGN.CENTER)

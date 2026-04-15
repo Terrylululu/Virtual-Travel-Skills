@@ -1,5 +1,5 @@
 ---
-name: xuni-lvxing
+name: Virtual-Travel
 description: "虚拟旅行SKILL — 交互式城市旅行探索技能。Use when: 用户想探索某个城市的旅行目的地、查看景点照片、生成旅行日记。涵盖：城市景点搜索、照片展示、交互式游览、精美旅行日记生成。"
 argument-hint: "输入城市名称开始旅行探索，例如：巴黎、京都、纽约"
 user-invocable: true
@@ -9,7 +9,7 @@ user-invocable: true
 
 ## 技能简介
 
-这是一个交互式旅行探索技能。用户输入目标城市后，系统会自动搜索该城市的著名景点照片并展示，用户可以选择继续浏览更多景点，或结束游览——结束时将生成一份包含图片的精美旅行日记。
+这是一个交互式旅行探索技能。用户输入目标城市后，系统会自动搜索该城市的著名景点照片并展示，同时**自动生成包含图片的精美旅行 PPT（.pptx）**，无需用户手动触发。
 
 ---
 
@@ -45,21 +45,26 @@ Test-Path ".venv\Scripts\python.exe"
 ```
 
 - 若返回 **True**：环境已就绪，直接进入第三步
-- 若返回 **False**：自动运行 `setup.ps1` 安装环境：
+- 若返回 **False**：手动创建虚拟环境并安装依赖：
   ```powershell
-  .\setup.ps1
+  python -m venv .venv
+  .venv\Scripts\pip install -r requirements.txt
   ```
   等待安装完成后，再进入第三步
 
+> ⚠️ 不要使用 `setup.ps1`，PowerShell 执行策略限制会导致其无法运行。
+
 > 此步骤只需在环境不存在时执行一次，后续调用直接跳过。
 
-### 第三步：下载图片并展示景点
+### 第三步：下载图片、展示景点，并自动生成 PPT
 
-收到城市名称后，**必须先运行 `show_city.py` 脚本**下载图片到本地，再展示：
+收到城市名称后，**同时执行以下两件事**：
+
+#### 3-A：下载图片并展示景点
 
 1. **运行图片下载脚本**（在终端中执行）：
    ```
-   c:/Users/Terry/Desktop/我爱旅行skill/.venv/Scripts/python.exe "skills/xuni-lvxing/scripts/show_city.py" --city [城市名] --output-dir "c:\Users\Terry\Desktop\我爱旅行skill"
+   .venv\Scripts\python.exe "skills/Virtual-Travel/scripts/show_city.py" --city [城市名] --output-dir "c:\Users\Terry\Desktop\Virtual-Travel-Skills-main"
    ```
    脚本输出 JSON，包含每个景点的本地图片路径（`image_local_path`）。
 
@@ -70,7 +75,7 @@ Test-Path ".venv\Scripts\python.exe"
 
 3. **使用本地路径展示图片**：将路径转换为 `file:///` URI 格式展示：
    ```markdown
-   ![景点名](file:///C:/Users/Terry/Desktop/我爱旅行skill/旅行日记/[城市名]/景点图片/[景点]/xxx.jpg)
+   ![景点名](file:///C:/Users/Terry/Desktop/Virtual-Travel-Skills-main/旅行日记/[城市名]/景点图片/[景点]/xxx.jpg)
    ```
 
 4. **展示格式**参考 [展示模板](./assets/display-template.md)
@@ -85,39 +90,54 @@ Test-Path ".venv\Scripts\python.exe"
 
 > **若城市不在脚本数据中**：先用 `fetch_webpage` 从 Wikipedia/Wikimedia 搜索景点信息，将新城市数据添加到 `ATTRACTION_DATA`（同时更新 `show_city.py` 和 `generate_travel_diary.py`），再运行脚本。
 
+#### 3-B：自动生成旅行日记 PPT（无需等待用户选择）
+
+**每次展示完景点后，立即在终端运行以下命令生成 PPT**（不等待用户选择）：
+
+```
+.\.venv\Scripts\python.exe "skills/Virtual-Travel/scripts/generate_travel_ppt.py" --city [城市名] --output-dir "c:\Users\Terry\Desktop\Virtual-Travel-Skills-main"
+```
+
+脚本运行完成后，告知用户 PPT 已生成并提供文件路径：
+
+```
+✅ 旅行 PPT 已自动生成！
+📄 文件路径：旅行日记/[城市名]/旅行PPT/[城市名]_旅行日记_[日期].pptx
+```
+
 ### 第四步：交互选择
 
-每次展示完景点后，询问用户：
+景点展示完（PPT 已自动生成）后，询问用户：
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📍 您已探索了 [城市名] 的 [已看景点数] 个景点
+✅ 旅行 PPT 已自动生成至：旅行日记/[城市名]/旅行PPT/
 
 请选择：
-  🔍 [1] 继续探索更多景点
-  📖 [2] 结束游览，生成旅行日记
-  🏙️  [3] 换一座城市
+  🔍 [1] 继续探索更多景点（并更新旅行日记）
+  🏙️  [2] 换一座城市
 
 您的选择：
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-- 选 **1（继续）**：搜索该城市**其他**著名景点（避免重复），重复第二步
-- 选 **2（结束）**：执行第四步，生成旅行日记
-- 选 **3（换城市）**：清空本次记录，从第一步重新开始
+- 选 **1（继续）**：搜索该城市**其他**著名景点（避免重复），展示后再次自动重新生成 PPT（包含所有已游览景点）
+- 选 **2（换城市）**：清空本次记录，从第一步重新开始
 
 ### 第五步：生成精美旅行日记（PDF + 本地文件）
 
-用户选择结束时，执行以下操作：
+**此步骤现已改为自动触发**，在第三步 3-B 中每次均会自动执行，无需用户手动选择。
 
+脚本执行内容：
 1. **运行生成脚本**（在终端中执行）：
    ```
-   python skills/xuni-lvxing/scripts/generate_travel_ppt.py --city [城市名] --output-dir .
+   .venv\Scripts\python.exe "skills/Virtual-Travel/scripts/generate_travel_ppt.py" --city [城市名] --output-dir "c:\Users\Terry\Desktop\Virtual-Travel-Skills-main"
    ```
    脚本会自动完成：
    - 通过 **Wikimedia Commons API** 下载景点高清图片到本地
    - 创建结构化文件夹（见下方文件夹结构）
-   - 生成包含图片的 **PDF 旅行日记**
+   - 生成包含图片的 **PPTX 旅行日记**
 
 2. **自动创建的文件夹结构**：
    ```
@@ -127,21 +147,21 @@ Test-Path ".venv\Scripts\python.exe"
        │   ├── [景点1]/  ← 包含该景点的本地图片
        │   ├── [景点2]/
        │   └── [景点3]/
-       ├── 旅行日记/
-       │   └── [城市名]_旅行日记_[日期].pdf  ← 生成的PDF
-       └── attractions_meta.json  ← 游览元数据
+       └── 旅行PPT/
+           └── [城市名]_旅行日记_[日期].pptx  ← 生成的 PPT
    ```
 
-3. **PDF 内容包含**：
-   - 城市封面标题与旅行日期
-   - 旅行序言（文学化写作）
-   - 每个景点的游记（含本地图片、简介、第一人称游记、贴士）
-   - 旅行尾记与总结
-   - 景点贴士汇总表
+3. **PPT 内容包含**：
+   - 城市封面（标题 + 副标题 + 日期）
+   - 每个景点幻灯片（含本地图片、简介、贴士、最佳时间、门票信息）
+   - 结尾致谢页
 
-日记写作模板参见 [旅行日记模板](./assets/travel-diary-template.md)
-
-> **注意**：如需为新城市添加景点数据，请编辑 `scripts/generate_travel_diary.py` 中的 `ATTRACTION_DATA` 字典，按现有上海数据格式添加即可。每个景点需提供 `wikimedia_file`（Wikimedia Commons 文件名）用于自动获取图片直链。
+> **注意**：如需为新城市添加景点数据，必须同步更新以下 **三个脚本** 中的 `ATTRACTION_DATA` 字典：
+> - `scripts/show_city.py`
+> - `scripts/generate_travel_ppt.py`
+> - `scripts/generate_travel_diary.py`
+>
+> 每个景点需提供 `wikimedia_file`（Wikimedia Commons 文件名）用于自动获取图片直链。
 
 ---
 
@@ -180,7 +200,7 @@ Test-Path ".venv\Scripts\python.exe"
 
 ## 示例交互
 
-**用户**：`/xuni-lvxing 巴黎`
+**用户**：`/Virtual-Travel 巴黎`
 
 **技能响应**：
 
@@ -191,11 +211,13 @@ Test-Path ".venv\Scripts\python.exe"
 >
 > ---
 > ### 🏛️ 埃菲尔铁塔（Tour Eiffel）
-> ![埃菲尔铁塔](file:///C:/Users/Terry/Desktop/我爱旅行skill/旅行日记/巴黎/景点图片/埃菲尔铁塔/eiffel_tower.jpg)
+> ![埃菲尔铁塔](file:///C:/Users/Terry/Desktop/Virtual-Travel-Skills-main/旅行日记/巴黎/景点图片/埃菲尔铁塔/eiffel_tower.jpg)
 >
 > 埃菲尔铁塔是法国巴黎的标志性建筑...
 >
 > 💡 **贴士**：建议傍晚时分前往，日落时分的铁塔格外迷人...
 >
+> ✅ 旅行 PPT 已自动生成：旅行日记/巴黎/旅行PPT/巴黎_旅行日记_20260415.pptx
+>
 > ---
-> 请选择：[1] 继续 [2] 结束生成日记 [3] 换城市
+> 请选择：[1] 继续探索更多景点 [2] 换城市

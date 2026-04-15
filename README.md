@@ -18,10 +18,11 @@
 | 城市 | 主要景点 |
 |------|----------|
 | 上海 | 外滩、东方明珠、豫园 |
-| 北京 | 故宫、颐和园、天坛 |
+| 北京 | 故宫、頸和园、天坛 |
 | 南京 | 中山陵、明孝陵、夫子庙秦淮风光带 |
 | 洛阳 | 龙门石窟、白马寺、关林 |
-| 商丘 | 古城、阏伯台、芒砀山汉梁王陵 |
+| 商丘 | 古城、阀伯台、芒砀山汉梁王陵 |
+| 广州 | 广州塔、陈家祠、中山纪念堂 |
 
 ---
 
@@ -40,10 +41,14 @@
 ```
 
 Copilot 会自动检查环境是否就绪：
-- **首次使用**：自动运行 `setup.ps1` 安装 Python 虚拟环境和依赖
+- **首次使用**：手动创建虚拟环境
+  ```powershell
+  python -m venv .venv
+  .\.venv\Scripts\pip install -r requirements.txt
+  ```
 - **已有环境**：直接跳过，展示景点图文攻略
 
-之后会询问是否生成旅行 PPT，生成的文件保存在：
+**展示完景点后，旅行 PPT 会自动生成**，无需手动触发。生成的文件保存在：
 
 ```
 旅行日记/{城市}/旅行PPT/{城市}_旅行日记_{日期}.pptx
@@ -54,19 +59,19 @@ Copilot 会自动检查环境是否就绪：
 ## 项目结构
 
 ```
-我爱旅行skill/
+Virtual-Travel-Skills-main/
 ├── skills/
-│   └── xuni-lvxing/
+│   └── Virtual-Travel/
 │       ├── SKILL.md                    # Copilot Skill 定义
 │       ├── assets/
 │       │   ├── display-template.md     # 景点展示模板
 │       │   └── travel-diary-template.md
 │       └── scripts/
-│           ├── show_city.py            # 景点图文展示
-│           ├── generate_travel_ppt.py  # PPT 生成
-│           └── generate_travel_diary.py # PDF 生成（备用）
+│           ├── show_city.py            # 景点图文展示及图片下载
+│           ├── generate_travel_ppt.py  # PPT 生成（主要）
+│           └── generate_travel_diary.py # PDF 日记生成（备用）
 ├── requirements.txt                    # Python 依赖
-├── setup.ps1                           # 环境一键搭建脚本
+├── setup.ps1                           # 环境搜 建脚本（注意：可能受执行策略限制）
 ├── .gitignore
 └── README.md
 ```
@@ -103,4 +108,5 @@ Copilot 会自动检查环境是否就绪：
 ```
 
 > `wikimedia_file` 可在 [Wikimedia Commons](https://commons.wikimedia.org) 搜索景点获取。
-# Virtual-Travel-Skills
+>
+> ⚠️ 添加新城市时需同步更新以下 **三个脚本**：`show_city.py`、`generate_travel_ppt.py`、`generate_travel_diary.py`
