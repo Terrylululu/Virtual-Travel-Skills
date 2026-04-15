@@ -1,0 +1,11 @@
+# 虚拟环境
+.venv/
+venv/
+env/
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+
+# 旅行日记输出（图片 + PPT）
+旅行日记/
