@@ -174,6 +174,35 @@ ATTRACTION_DATA = {
             "wikimedia_file": "Guanlin Temple, Luoyang - September 2011 (6154312540).jpg",
             "image_filename": "guanlin.jpg"
         }
+    },
+    "青岛": {
+        "栈桥": {
+            "name_en": "Zhanqiao Pier",
+            "description": "栈桥是青岛最具代表性的历史地标，建于1891年，是青岛最早的军事专用人工码头。栈桥伸入胶州湾约440米，桥端建有回澜阁，碧瓦飞檐倒映海中；海鸥翻飞、涛声阵阵，是感受青岛海滨城市气质的最佳起点，也是每一位来青岛游客必打卡的地方。",
+            "tips": "清晨或傍晚人少，光线最佳；可在附近的第六海水浴场散步，欣赏红瓦绿树的老城风光。",
+            "best_time": "全年皆宜；夏季（6-8月）海景最美",
+            "ticket": "免费开放",
+            "wikimedia_file": "Qingdao Zhan Qiao.jpg",
+            "image_filename": "zhanqiao.jpg"
+        },
+        "八大关景区": {
+            "name_en": "Badaguan Scenic Area",
+            "description": "八大关是青岛著名的老城别墅区，因区内有八条以长城各关口命名的道路而得名。这里汇聚了德、英、法、俄、日等20余国风格的各式别墅300余栋，被誉为'万国建筑博览会'。四季花木轮换，春赏樱花、夏看蔷薇、秋观银杏、冬品枫叶，是青岛最诗意的漫步之地。",
+            "tips": "适合漫步游览，全程约1-2小时；建议春季（4月）来看道路两侧的樱花盛况最为壮观。",
+            "best_time": "春季（4月樱花）或秋季（10月银杏）最美",
+            "ticket": "景区免费开放",
+            "wikimedia_file": "Badaguan, Qingdao.jpg",
+            "image_filename": "badaguan.jpg"
+        },
+        "崂山": {
+            "name_en": "Mount Laoshan",
+            "description": "崂山是中国海拔最高的海岸山脉，主峰巨峰海拔1132.7米，素有'海上名山第一'之称。山中泉水清冽甘甜，传说是用来酿造青岛啤酒的水源，道教宫观太清宫在此延续千年香火。登顶俯瞰波澜壮阔的黄海，山海相连的壮景令人叹为观止。",
+            "tips": "建议乘坐景区观光车减少体力消耗；太清宫是必游之处，山顶观日出极为震撼，需提前出发。",
+            "best_time": "春秋两季（避开夏季高温和冬季山顶寒冷）",
+            "ticket": "约人民币130元",
+            "wikimedia_file": "Laoshan, Qingdao, Shandong, China - panoramio (32).jpg",
+            "image_filename": "laoshan.jpg"
+        }
     }
 }
 

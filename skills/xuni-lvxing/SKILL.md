@@ -1,11 +1,11 @@
 ---
-name: wo-ai-lvxing
-description: "我爱旅行 — 交互式城市旅行探索技能。Use when: 用户想探索某个城市的旅行目的地、查看景点照片、生成旅行日记。涵盖：城市景点搜索、照片展示、交互式游览、精美旅行日记生成。"
+name: xuni-lvxing
+description: "虚拟旅行SKILL — 交互式城市旅行探索技能。Use when: 用户想探索某个城市的旅行目的地、查看景点照片、生成旅行日记。涵盖：城市景点搜索、照片展示、交互式游览、精美旅行日记生成。"
 argument-hint: "输入城市名称开始旅行探索，例如：巴黎、京都、纽约"
 user-invocable: true
 ---
 
-# 我爱旅行 ✈️
+# 虚拟旅行 SKILL ✈️
 
 ## 技能简介
 
@@ -35,13 +35,31 @@ user-invocable: true
 （例如：巴黎、东京、纽约、成都、迪拜...）
 ```
 
-### 第二步：下载图片并展示景点
+### 第二步：检查并准备 Python 环境
+
+收到城市名称后，**在运行任何脚本之前**，先检查虚拟环境是否存在：
+
+在终端执行：
+```powershell
+Test-Path ".venv\Scripts\python.exe"
+```
+
+- 若返回 **True**：环境已就绪，直接进入第三步
+- 若返回 **False**：自动运行 `setup.ps1` 安装环境：
+  ```powershell
+  .\setup.ps1
+  ```
+  等待安装完成后，再进入第三步
+
+> 此步骤只需在环境不存在时执行一次，后续调用直接跳过。
+
+### 第三步：下载图片并展示景点
 
 收到城市名称后，**必须先运行 `show_city.py` 脚本**下载图片到本地，再展示：
 
 1. **运行图片下载脚本**（在终端中执行）：
    ```
-   c:/Users/Terry/Desktop/我爱旅行skill/.venv/Scripts/python.exe "skills/wo-ai-lvxing/scripts/show_city.py" --city [城市名] --output-dir "c:\Users\Terry\Desktop\我爱旅行skill"
+   c:/Users/Terry/Desktop/我爱旅行skill/.venv/Scripts/python.exe "skills/xuni-lvxing/scripts/show_city.py" --city [城市名] --output-dir "c:\Users\Terry\Desktop\我爱旅行skill"
    ```
    脚本输出 JSON，包含每个景点的本地图片路径（`image_local_path`）。
 
@@ -67,7 +85,7 @@ user-invocable: true
 
 > **若城市不在脚本数据中**：先用 `fetch_webpage` 从 Wikipedia/Wikimedia 搜索景点信息，将新城市数据添加到 `ATTRACTION_DATA`（同时更新 `show_city.py` 和 `generate_travel_diary.py`），再运行脚本。
 
-### 第三步：交互选择
+### 第四步：交互选择
 
 每次展示完景点后，询问用户：
 
@@ -88,13 +106,13 @@ user-invocable: true
 - 选 **2（结束）**：执行第四步，生成旅行日记
 - 选 **3（换城市）**：清空本次记录，从第一步重新开始
 
-### 第四步：生成精美旅行日记（PDF + 本地文件）
+### 第五步：生成精美旅行日记（PDF + 本地文件）
 
 用户选择结束时，执行以下操作：
 
 1. **运行生成脚本**（在终端中执行）：
    ```
-   python skills/wo-ai-lvxing/scripts/generate_travel_ppt.py --city [城市名] --output-dir .
+   python skills/xuni-lvxing/scripts/generate_travel_ppt.py --city [城市名] --output-dir .
    ```
    脚本会自动完成：
    - 通过 **Wikimedia Commons API** 下载景点高清图片到本地
@@ -162,7 +180,7 @@ user-invocable: true
 
 ## 示例交互
 
-**用户**：`/wo-ai-lvxing 巴黎`
+**用户**：`/xuni-lvxing 巴黎`
 
 **技能响应**：
 
